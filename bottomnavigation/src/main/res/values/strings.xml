@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BottomNavigation</string>
+    <string name="view_description">null</string>
 </resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TagView">
+        <attr name="tv_icon_src" format="reference" />
+        <attr name="tv_icon_width" format="dimension" />
+        <attr name="tv_icon_height" format="dimension" />
+        <attr name="tv_text" format="string" />
+    </declare-styleable>
+</resources>

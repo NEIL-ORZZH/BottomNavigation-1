@@ -1,6 +1,7 @@
 package com.chrischeng.bottomnavigation;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -15,6 +16,7 @@ public class TabView extends LinearLayout {
     private static final float DEFAULT_ICON_WIDTH = 52f;
     private static final float DEFAULT_ICON_HEIGHT = 52f;
 
+    private Resources mRes;
     private ImageView mImageView;
     private TextView mTextView;
 
@@ -28,11 +30,25 @@ public class TabView extends LinearLayout {
     }
 
     public void setData(int iconResId, int textResId) {
+        setData(iconResId, mRes.getString(textResId));
+    }
+
+    public void setData(int iconResId, String text) {
         mImageView.setImageResource(iconResId);
-        mTextView.setText(getContext().getResources().getString(textResId));
+        mTextView.setText(text);
+    }
+
+    public void setText(int textResId) {
+        setText(mRes.getString(textResId));
+    }
+
+    public void setText(String text) {
+        mTextView.setText(text);
     }
 
     private void init(Context context, AttributeSet attrs) {
+        mRes = context.getResources();
+
         setOrientation(VERTICAL);
         setGravity(Gravity.CENTER);
 

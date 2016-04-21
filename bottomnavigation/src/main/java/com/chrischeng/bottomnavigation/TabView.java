@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -14,11 +13,11 @@ import android.widget.TextView;
 
 public class TabView extends LinearLayout {
 
-    private static final float DEFAULT_ICON_WIDTH = 52f;
-    private static final float DEFAULT_ICON_HEIGHT = 52f;
+    private static final float DEFAULT_ICON_WIDTH = 24f;
+    private static final float DEFAULT_ICON_HEIGHT = 24f;
     private static final float DEFAULT_TEXT_SIZE = 12f;
-    private static final int DEFAULT_TEXT_COLOR = 0x666666;
-    private static final float DEFAULT_TEXT_TOPMARGIN = 8f;
+    private static final int DEFAULT_TEXT_COLOR = 0xff666666;
+    private static final float DEFAULT_TEXT_TOPMARGIN = 3f;
 
     private Resources mRes;
     private ImageView mImageView;
@@ -107,11 +106,10 @@ public class TabView extends LinearLayout {
             imgParams.height = (int) iconHeight;
         mImageView.setLayoutParams(imgParams);
 
-        String text = a.getString(R.styleable.TagView_tv_text);
+        String text = a.getString(R.styleable.TabView_tv_text);
         mTextView.setText(TextUtils.isEmpty(text) ? "" : text);
 
-        mTextView.setTextSize(a.getDimension(R.styleable.TabView_tv_text_size,
-                TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, DEFAULT_TEXT_SIZE, mRes.getDisplayMetrics())));
+        mTextView.setTextSize(a.getDimension(R.styleable.TabView_tv_text_size, DEFAULT_TEXT_SIZE));
         mTextView.setTextColor(a.getColor(R.styleable.TabView_tv_text_color, DEFAULT_TEXT_COLOR));
         LayoutParams textParams = (LayoutParams) mTextView.getLayoutParams();
         textParams.topMargin = (int) a.getDimension(R.styleable.TabView_tv_text_marginTop, dp2px(DEFAULT_TEXT_TOPMARGIN));

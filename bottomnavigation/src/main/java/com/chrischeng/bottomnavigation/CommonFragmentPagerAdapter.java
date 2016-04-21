@@ -13,7 +13,7 @@ import java.util.List;
 public class CommonFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private Context mContext;
-    private List<Fragment> mFragments;
+    private List<Fragment> mFragments = new ArrayList<>();
     private int[] mImgResIds;
     private int[] mTextResIds;
 
@@ -80,7 +80,6 @@ public class CommonFragmentPagerAdapter extends FragmentPagerAdapter {
     }
 
     private void init(Fragment... fragments) {
-        mFragments = new ArrayList<>();
         addFragments(fragments);
     }
 }

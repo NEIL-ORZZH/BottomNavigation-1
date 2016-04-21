@@ -29,8 +29,8 @@ public class BottomNavigation extends LinearLayout {
 
         for (int i = 0; i < mTabLayout.getTabCount(); i++) {
             TabLayout.Tab tab = mTabLayout.getTabAt(i);
-//            if (tab != null)
-//                tab.setCustomView(adapter.getTabView(i));
+            if (tab != null)
+                tab.setCustomView(adapter.getTabView(i));
         }
     }
 

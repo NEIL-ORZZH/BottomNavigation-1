@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -15,6 +16,9 @@ public class TabView extends LinearLayout {
 
     private static final float DEFAULT_ICON_WIDTH = 52f;
     private static final float DEFAULT_ICON_HEIGHT = 52f;
+    private static final float DEFAULT_TEXT_SIZE = 12f;
+    private static final int DEFAULT_TEXT_COLOR = 0x666666;
+    private static final float DEFAULT_TEXT_TOPMARGIN = 8f;
 
     private Resources mRes;
     private ImageView mImageView;
@@ -29,13 +33,17 @@ public class TabView extends LinearLayout {
         init(context, attrs);
     }
 
-    public void setData(int iconResId, int textResId) {
-        setData(iconResId, mRes.getString(textResId));
+    public void setResource(int iconResId, int textResId) {
+        setResource(iconResId, mRes.getString(textResId));
     }
 
-    public void setData(int iconResId, String text) {
+    public void setResource(int iconResId, String text) {
         mImageView.setImageResource(iconResId);
         mTextView.setText(text);
+    }
+
+    public void setImgResource(int resId) {
+        mImageView.setImageResource(resId);
     }
 
     public void setText(int textResId) {
@@ -44,6 +52,28 @@ public class TabView extends LinearLayout {
 
     public void setText(String text) {
         mTextView.setText(text);
+    }
+
+    public void setTextSize(float size) {
+        mTextView.setTextSize(size);
+    }
+
+    public void setTextColor(int color) {
+        mTextView.setTextColor(color);
+    }
+
+    public void setTextMarginTop(int topMargin) {
+        LayoutParams params = (LayoutParams) mTextView.getLayoutParams();
+        params.topMargin = topMargin;
+        mTextView.setLayoutParams(params);
+    }
+
+    public ImageView getImageView() {
+        return mImageView;
+    }
+
+    public TextView getTextView() {
+        return mTextView;
     }
 
     private void init(Context context, AttributeSet attrs) {
@@ -57,28 +87,35 @@ public class TabView extends LinearLayout {
     }
 
     private void findView(Context context) {
-        LayoutInflater.from(context).inflate(R.layout.view_tag, this, true);
-        mImageView = (ImageView) findViewById(R.id.iv_tag);
-        mTextView = (TextView) findViewById(R.id.tv_tag);
+        LayoutInflater.from(context).inflate(R.layout.view_tab, this, true);
+        mImageView = (ImageView) findViewById(R.id.iv_tab);
+        mTextView = (TextView) findViewById(R.id.tv_tab);
     }
 
     private void initAttrs(Context context, AttributeSet attrs) {
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TagView);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TabView);
 
-        int iconResId = a.getResourceId(R.styleable.TagView_tv_icon_src, -1);
+        int iconResId = a.getResourceId(R.styleable.TabView_tv_icon_src, -1);
         if (iconResId != -1)
             mImageView.setImageResource(iconResId);
-        float iconWidth = a.getDimension(R.styleable.TagView_tv_icon_width, dp2px(DEFAULT_ICON_WIDTH));
-        float iconHeight = a.getDimension(R.styleable.TagView_tv_icon_height, dp2px(DEFAULT_ICON_HEIGHT));
-        LayoutParams params = (LayoutParams) mImageView.getLayoutParams();
+        float iconWidth = a.getDimension(R.styleable.TabView_tv_icon_width, dp2px(DEFAULT_ICON_WIDTH));
+        float iconHeight = a.getDimension(R.styleable.TabView_tv_icon_height, dp2px(DEFAULT_ICON_HEIGHT));
+        LayoutParams imgParams = (LayoutParams) mImageView.getLayoutParams();
         if (iconWidth > 0)
-            params.width = (int) iconWidth;
+            imgParams.width = (int) iconWidth;
         if (iconHeight > 0)
-            params.height = (int) iconHeight;
-        mImageView.setLayoutParams(params);
+            imgParams.height = (int) iconHeight;
+        mImageView.setLayoutParams(imgParams);
 
         String text = a.getString(R.styleable.TagView_tv_text);
         mTextView.setText(TextUtils.isEmpty(text) ? "" : text);
+
+        mTextView.setTextSize(a.getDimension(R.styleable.TabView_tv_text_size,
+                TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, DEFAULT_TEXT_SIZE, mRes.getDisplayMetrics())));
+        mTextView.setTextColor(a.getColor(R.styleable.TabView_tv_text_color, DEFAULT_TEXT_COLOR));
+        LayoutParams textParams = (LayoutParams) mTextView.getLayoutParams();
+        textParams.topMargin = (int) a.getDimension(R.styleable.TabView_tv_text_marginTop, dp2px(DEFAULT_TEXT_TOPMARGIN));
+        mTextView.setLayoutParams(textParams);
 
         a.recycle();
     }

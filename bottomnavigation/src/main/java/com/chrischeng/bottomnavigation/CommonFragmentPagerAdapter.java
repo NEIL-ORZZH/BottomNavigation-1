@@ -1,8 +1,10 @@
 package com.chrischeng.bottomnavigation;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,15 +12,30 @@ import java.util.List;
 
 public class CommonFragmentPagerAdapter extends FragmentPagerAdapter {
 
+    private Context mContext;
     private List<Fragment> mFragments;
+    private int[] mImgResIds;
+    private int[] mTextResIds;
 
-    public CommonFragmentPagerAdapter(FragmentManager fm) {
+    public CommonFragmentPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
+        mContext = context;
     }
 
-    public CommonFragmentPagerAdapter(FragmentManager fm, Fragment... fragments) {
+    public CommonFragmentPagerAdapter(Context context, FragmentManager fm, Fragment... fragments) {
         super(fm);
+        mContext = context;
         init(fragments);
+    }
+
+    public View getTabView(int pos) {
+        TabView tabView = new TabView(mContext);
+        if (mImgResIds.length > pos)
+            tabView.setImgResource(mImgResIds[pos]);
+        if (mTextResIds.length > pos)
+            tabView.setText(mTextResIds[pos]);
+
+        return tabView;
     }
 
     public void addFragments(Fragment... fragments) {
@@ -41,6 +58,15 @@ public class CommonFragmentPagerAdapter extends FragmentPagerAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void setResources(int[] imgResIds, int[] textResIds) {
+        mImgResIds = imgResIds;
+        mTextResIds = textResIds;
+    }
+
+    public void setTextResources(int[] textResIds) {
+        mTextResIds = textResIds;
     }
 
     @Override

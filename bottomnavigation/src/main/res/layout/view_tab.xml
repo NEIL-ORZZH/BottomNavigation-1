@@ -1,6 +1,6 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ImageView
+    <com.chrischeng.gradienttabview.GradientImageView
         android:id="@+id/iv_tab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -8,7 +8,7 @@
         android:contentDescription="@string/view_description"
         android:scaleType="fitXY" />
 
-    <TextView
+    <com.chrischeng.gradienttabview.GradientTextView
         android:id="@+id/tv_tab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

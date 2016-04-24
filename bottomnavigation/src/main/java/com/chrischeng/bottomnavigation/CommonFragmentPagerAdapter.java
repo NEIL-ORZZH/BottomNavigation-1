@@ -14,7 +14,8 @@ public class CommonFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private Context mContext;
     private List<Fragment> mFragments = new ArrayList<>();
-    private int[] mImgResIds;
+    private int[] mBotImageResIds;
+    private int[] mTopImageResIds;
     private int[] mTextResIds;
 
     public CommonFragmentPagerAdapter(Context context, FragmentManager fm) {
@@ -29,13 +30,10 @@ public class CommonFragmentPagerAdapter extends FragmentPagerAdapter {
     }
 
     public View getTabView(int pos) {
-        TabView tabView = new TabView(mContext);
-        if (mImgResIds.length > pos)
-            tabView.setImgResource(mImgResIds[pos]);
-        if (mTextResIds.length > pos)
-            tabView.setText(mTextResIds[pos]);
-
-        return tabView;
+        GradientTabView v = new GradientTabView(mContext);
+        v.setImageResources(mBotImageResIds[pos], mTopImageResIds[pos]);
+        v.setText(mTextResIds[pos]);
+        return v;
     }
 
     public void addFragments(Fragment... fragments) {
@@ -60,12 +58,9 @@ public class CommonFragmentPagerAdapter extends FragmentPagerAdapter {
         }
     }
 
-    public void setResources(int[] imgResIds, int[] textResIds) {
-        mImgResIds = imgResIds;
-        mTextResIds = textResIds;
-    }
-
-    public void setTextResources(int[] textResIds) {
+    public void setResources(int[] botImageResIds, int[] topImageResIds, int[] textResIds) {
+        mBotImageResIds = botImageResIds;
+        mTopImageResIds = topImageResIds;
         mTextResIds = textResIds;
     }
 

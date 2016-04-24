@@ -14,6 +14,7 @@ public abstract class BaseFragment extends Fragment {
     @StringRes
     protected abstract int getText();
 
+    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tab, container, false);

@@ -2,6 +2,7 @@ package com.chrischeng.bottomnavigation;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
@@ -20,7 +21,7 @@ import com.chrischeng.gradienttabview.GradientTextView;
 public class GradientTabView extends LinearLayout {
 
     private static final float DEFAULT_TEXT_SIZE = 12f;
-    private static final int DEFAULT_TEXT_COLOR = 0xff666666;
+    private static final int DEFAULT_TEXT_COLOR = Color.GRAY;
     private static final float DEFAULT_TEXT_TOPMARGIN = 3f;
 
     private GradientImageView mImageView;
@@ -65,6 +66,24 @@ public class GradientTabView extends LinearLayout {
         LayoutParams params = (LayoutParams) mTextView.getLayoutParams();
         params.topMargin = topMargin;
         mTextView.setLayoutParams(params);
+    }
+
+    public GradientImageView getImageView() {
+        return mImageView;
+    }
+
+    public GradientTextView getTextView() {
+        return mTextView;
+    }
+
+    public void highlight() {
+        mImageView.setAlpha(1f);
+        mTextView.setAlpha(1f);
+    }
+
+    public void reset() {
+        mImageView.setAlpha(0);
+        mTextView.setAlpha(0);
     }
 
     private void init(Context context, AttributeSet attrs) {

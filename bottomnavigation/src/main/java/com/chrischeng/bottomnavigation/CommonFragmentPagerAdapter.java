@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +28,7 @@ public class CommonFragmentPagerAdapter extends FragmentPagerAdapter {
         init(fragments);
     }
 
-    public View getTabView(int pos) {
+    public GradientTabView getTabView(int pos) {
         GradientTabView v = new GradientTabView(mContext);
         v.setImageResources(mBotImageResIds[pos], mTopImageResIds[pos]);
         v.setText(mTextResIds[pos]);

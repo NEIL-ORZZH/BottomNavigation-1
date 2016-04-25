@@ -1,6 +1,7 @@
 package com.chrischeng.bottomnavigation;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -14,6 +15,8 @@ import java.util.List;
 
 public class BottomNavigation extends LinearLayout implements View.OnClickListener {
 
+    private static final int DEFAULT_VP_LIMIT = 1;
+
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
     private List<GradientTabView> mTabViews;
@@ -25,7 +28,7 @@ public class BottomNavigation extends LinearLayout implements View.OnClickListen
 
     public BottomNavigation(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context, attrs);
     }
 
     public void setAdapter(CommonFragmentPagerAdapter adapter) {
@@ -63,16 +66,20 @@ public class BottomNavigation extends LinearLayout implements View.OnClickListen
         setCurrentItem(pos);
     }
 
-    private void init() {
+    private void init(Context context, AttributeSet attrs) {
         setOrientation(LinearLayout.VERTICAL);
-        findView();
+        initView(context, attrs);
         initListener();
     }
 
-    private void findView() {
+    private void initView(Context context, AttributeSet attrs) {
         View v = LayoutInflater.from(getContext()).inflate(R.layout.bottom_navigation, this, true);
         mViewPager = (ViewPager) v.findViewById(R.id.vp);
         mTabLayout = (TabLayout) v.findViewById(R.id.tabLayout);
+
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BottomNavigation);
+        mViewPager.setOffscreenPageLimit(a.getInteger(R.styleable.BottomNavigation_bn_tab_vp_limit, DEFAULT_VP_LIMIT));
+        a.recycle();
     }
 
     private void initListener() {

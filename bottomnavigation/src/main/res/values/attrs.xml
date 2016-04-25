@@ -6,6 +6,7 @@
         <attr name="bn_tab_text_size" format="dimension" />
         <attr name="bn_tab_text_color" format="color" />
         <attr name="bn_tab_text_marginTop" format="dimension" />
+        <attr name="bn_tab_vp_limit" format="integer" />
     </declare-styleable>
 
     <declare-styleable name="GradientTabView">

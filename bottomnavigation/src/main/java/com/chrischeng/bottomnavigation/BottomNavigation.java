@@ -15,10 +15,12 @@ import java.util.List;
 
 public class BottomNavigation extends LinearLayout implements View.OnClickListener {
 
+    private static final boolean DEFAULT_SCROLL_SMOOTHLY = true;
     private static final int DEFAULT_VP_LIMIT = 1;
 
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
+    private boolean mSmoothly;
     private OnPageChangeListener mListener;
     private List<GradientTabView> mTabViews;
     private boolean mIsClick;
@@ -30,6 +32,10 @@ public class BottomNavigation extends LinearLayout implements View.OnClickListen
     public BottomNavigation(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
+    }
+
+    public void setOnPageChangeListener(OnPageChangeListener listener) {
+        mListener = listener;
     }
 
     public void setAdapter(CommonFragmentPagerAdapter adapter) {
@@ -54,13 +60,13 @@ public class BottomNavigation extends LinearLayout implements View.OnClickListen
     public void setCurrentItem(int item) {
         PagerAdapter apdater = mViewPager.getAdapter();
         if (apdater != null && apdater.getCount() > item)
-            mViewPager.setCurrentItem(item);
+            mViewPager.setCurrentItem(item, mSmoothly);
 
         highlight(item);
     }
 
-    public void setOnPageChangeListener(OnPageChangeListener listener) {
-        mListener = listener;
+    public void setScrollSmoothly(boolean smoothly) {
+        mSmoothly = smoothly;
     }
 
     @Override
@@ -83,6 +89,7 @@ public class BottomNavigation extends LinearLayout implements View.OnClickListen
         mTabLayout = (TabLayout) v.findViewById(R.id.tabLayout);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BottomNavigation);
+        mSmoothly = a.getBoolean(R.styleable.BottomNavigation_bn_tab_vp_smoothScroll, DEFAULT_SCROLL_SMOOTHLY);
         mViewPager.setOffscreenPageLimit(a.getInteger(R.styleable.BottomNavigation_bn_tab_vp_limit, DEFAULT_VP_LIMIT));
         a.recycle();
     }

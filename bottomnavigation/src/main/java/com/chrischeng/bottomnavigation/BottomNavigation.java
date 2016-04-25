@@ -12,11 +12,12 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BottomNavigation extends LinearLayout {
+public class BottomNavigation extends LinearLayout implements View.OnClickListener {
 
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
     private List<GradientTabView> mTabViews;
+    private boolean mIsClick;
 
     public BottomNavigation(Context context) {
         this(context, null);
@@ -36,16 +37,30 @@ public class BottomNavigation extends LinearLayout {
             TabLayout.Tab tab = mTabLayout.getTabAt(i);
             if (tab != null) {
                 GradientTabView tabView = adapter.getTabView(i);
+                tabView.setTag(i);
+                tabView.setOnClickListener(this);
                 mTabViews.add(tabView);
                 tab.setCustomView(tabView);
             }
         }
+
+        setCurrentItem(0);
     }
 
     public void setCurrentItem(int item) {
         PagerAdapter apdater = mViewPager.getAdapter();
         if (apdater != null && apdater.getCount() > item)
             mViewPager.setCurrentItem(item);
+
+        highlight(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        mIsClick = true;
+        int pos = (int) v.getTag();
+        highlight(pos);
+        setCurrentItem(pos);
     }
 
     private void init() {
@@ -64,7 +79,7 @@ public class BottomNavigation extends LinearLayout {
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (positionOffset > 0) {
+                if (!mIsClick && positionOffset > 0) {
                     mTabViews.get(position).getImageView().setAlpha(1 - positionOffset);
                     mTabViews.get(position).getTextView().setAlpha(1 - positionOffset);
                     mTabViews.get(position + 1).getImageView().setAlpha(positionOffset);
@@ -74,12 +89,13 @@ public class BottomNavigation extends LinearLayout {
 
             @Override
             public void onPageSelected(int position) {
-                highlight(position);
+
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
+                if (state == ViewPager.SCROLL_STATE_IDLE)
+                    mIsClick = false;
             }
         });
     }

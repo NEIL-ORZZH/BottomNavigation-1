@@ -16,6 +16,7 @@ public class CommonFragmentPagerAdapter extends FragmentPagerAdapter {
     private int[] mBotImageResIds;
     private int[] mTopImageResIds;
     private int[] mTextResIds;
+    private int[] mTextColors;
 
     public CommonFragmentPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
@@ -32,6 +33,8 @@ public class CommonFragmentPagerAdapter extends FragmentPagerAdapter {
         GradientTabView v = new GradientTabView(mContext);
         v.setImageResources(mBotImageResIds[pos], mTopImageResIds[pos]);
         v.setText(mTextResIds[pos]);
+        if (mTextColors.length >= 2)
+            v.setTextColors(mTextColors[0], mTextColors[1]);
         return v;
     }
 
@@ -57,10 +60,11 @@ public class CommonFragmentPagerAdapter extends FragmentPagerAdapter {
         }
     }
 
-    public void setResources(int[] botImageResIds, int[] topImageResIds, int[] textResIds) {
+    public void setResources(int[] botImageResIds, int[] topImageResIds, int[] textResIds, int[] textColors) {
         mBotImageResIds = botImageResIds;
         mTopImageResIds = topImageResIds;
         mTextResIds = textResIds;
+        mTextColors = textColors;
     }
 
     @Override

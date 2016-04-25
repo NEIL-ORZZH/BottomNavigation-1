@@ -20,9 +20,9 @@ import com.chrischeng.gradienttabview.GradientTextView;
 
 public class GradientTabView extends LinearLayout {
 
-    private static final float DEFAULT_TEXT_SIZE = 12f;
+    private static final float DEFAULT_TEXT_SIZE = 6f;
     private static final int DEFAULT_TEXT_COLOR = Color.GRAY;
-    private static final float DEFAULT_TEXT_TOPMARGIN = 3f;
+    private static final float DEFAULT_TEXT_TOPMARGIN = 1f;
 
     private GradientImageView mImageView;
     private GradientTextView mTextView;
@@ -58,8 +58,17 @@ public class GradientTabView extends LinearLayout {
         mTextView.setTextSize(size);
     }
 
-    public void setTextColor(int color) {
+    public void setTextColors(int botColor, int topColor) {
+        setBotTextColor(botColor);
+        setTopTextColor(topColor);
+    }
+
+    public void setBotTextColor(int color) {
         mTextView.setBotTextColor(color);
+    }
+
+    public void setTopTextColor(int color) {
+        mTextView.setTopTextColor(color);
     }
 
     public void setTextMarginTop(int topMargin) {
@@ -120,8 +129,8 @@ public class GradientTabView extends LinearLayout {
         String text = a.getString(R.styleable.GradientTabView_gt_text);
         mTextView.setText(TextUtils.isEmpty(text) ? "" : text);
 
-        mTextView.setTextSize(a.getDimension(R.styleable.GradientTabView_gt_text_size,
-                TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, DEFAULT_TEXT_SIZE, dm)));
+        mTextView.setTextSize(a.getDimensionPixelSize(R.styleable.GradientTabView_gt_text_size,
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, DEFAULT_TEXT_SIZE, dm)));
 
         mTextView.setBotTextColor(a.getColor(R.styleable.GradientTabView_gt_text_bot_color, DEFAULT_TEXT_COLOR));
         mTextView.setTopTextColor(a.getColor(R.styleable.GradientTabView_gt_text_top_color, DEFAULT_TEXT_COLOR));

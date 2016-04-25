@@ -19,6 +19,7 @@ public class BottomNavigation extends LinearLayout implements View.OnClickListen
 
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
+    private OnPageChangeListener mListener;
     private List<GradientTabView> mTabViews;
     private boolean mIsClick;
 
@@ -58,6 +59,10 @@ public class BottomNavigation extends LinearLayout implements View.OnClickListen
         highlight(item);
     }
 
+    public void setOnPageChangeListener(OnPageChangeListener listener) {
+        mListener = listener;
+    }
+
     @Override
     public void onClick(View v) {
         mIsClick = true;
@@ -86,6 +91,9 @@ public class BottomNavigation extends LinearLayout implements View.OnClickListen
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if (mListener != null)
+                    mListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
+
                 if (!mIsClick && positionOffset > 0) {
                     mTabViews.get(position).getImageView().setAlpha(1 - positionOffset);
                     mTabViews.get(position).getTextView().setAlpha(1 - positionOffset);
@@ -96,11 +104,15 @@ public class BottomNavigation extends LinearLayout implements View.OnClickListen
 
             @Override
             public void onPageSelected(int position) {
-
+                if (mListener != null)
+                    mListener.onPageSelected(position);
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
+                if (mListener != null)
+                    mListener.onPageScrollStateChanged(state);
+
                 if (state == ViewPager.SCROLL_STATE_IDLE)
                     mIsClick = false;
             }

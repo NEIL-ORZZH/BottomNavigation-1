@@ -1,16 +1,14 @@
 package com.chrischeng.bottomnavigation;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
@@ -19,10 +17,6 @@ import com.chrischeng.gradienttabview.GradientImageView;
 import com.chrischeng.gradienttabview.GradientTextView;
 
 public class GradientTabView extends LinearLayout {
-
-    private static final float DEFAULT_TEXT_SIZE = 6f;
-    private static final int DEFAULT_TEXT_COLOR = Color.GRAY;
-    private static final float DEFAULT_TEXT_TOPMARGIN = 1f;
 
     private GradientImageView mImageView;
     private GradientTextView mTextView;
@@ -33,7 +27,7 @@ public class GradientTabView extends LinearLayout {
 
     public GradientTabView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context, attrs);
+        init(attrs);
     }
 
     public void setImageResources(@DrawableRes int botResId, @DrawableRes int topResId) {
@@ -95,24 +89,24 @@ public class GradientTabView extends LinearLayout {
         mTextView.setAlpha(0);
     }
 
-    private void init(Context context, AttributeSet attrs) {
+    private void init(AttributeSet attrs) {
         setOrientation(VERTICAL);
         setGravity(Gravity.CENTER);
 
-        findView(context);
-        initAttrs(context, attrs);
+        findView();
+        initAttrs(attrs);
     }
 
-    private void findView(Context context) {
-        LayoutInflater.from(context).inflate(R.layout.view_tab, this, true);
+    private void findView() {
+        LayoutInflater.from(getContext()).inflate(R.layout.view_tab, this, true);
         mImageView = (GradientImageView) findViewById(R.id.iv_tab);
         mTextView = (GradientTextView) findViewById(R.id.tv_tab);
     }
 
-    private void initAttrs(Context context, AttributeSet attrs) {
-        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+    private void initAttrs(AttributeSet attrs) {
+        Resources res = getContext().getResources();
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.GradientTabView);
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.GradientTabView);
 
         mImageView.setBotDrawable(a.getDrawable(R.styleable.GradientTabView_gt_icon_bot_src));
         mImageView.setTopDrawable(a.getDrawable(R.styleable.GradientTabView_gt_icon_top_src));
@@ -129,16 +123,15 @@ public class GradientTabView extends LinearLayout {
         String text = a.getString(R.styleable.GradientTabView_gt_text);
         mTextView.setText(TextUtils.isEmpty(text) ? "" : text);
 
-        mTextView.setTextSize(a.getDimensionPixelSize(R.styleable.GradientTabView_gt_text_size,
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, DEFAULT_TEXT_SIZE, dm)));
+        mTextView.setTextSize(a.getDimension(R.styleable.GradientTabView_gt_text_size,
+                res.getInteger(R.integer.default_tab_text_size)));
+        mTextView.setBotTextColor(a.getColor(R.styleable.GradientTabView_gt_text_bot_color,
+                res.getColor(R.color.default_tab_text_color)));
+        mTextView.setTopTextColor(a.getColor(R.styleable.GradientTabView_gt_text_top_color,
+                res.getColor(R.color.default_tab_text_color)));
 
-        mTextView.setBotTextColor(a.getColor(R.styleable.GradientTabView_gt_text_bot_color, DEFAULT_TEXT_COLOR));
-        mTextView.setTopTextColor(a.getColor(R.styleable.GradientTabView_gt_text_top_color, DEFAULT_TEXT_COLOR));
-
-        LayoutParams textParams = (LayoutParams) mTextView.getLayoutParams();
-        textParams.topMargin = (int) a.getDimension(R.styleable.GradientTabView_gt_text_marginTop,
-                TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_TEXT_TOPMARGIN, dm));
-        mTextView.setLayoutParams(textParams);
+        ((LayoutParams) mTextView.getLayoutParams()).topMargin = (int) a.getDimension(R.styleable.GradientTabView_gt_text_marginTop,
+                res.getDimension(R.dimen.default_tab_text_top_margin));
 
         a.recycle();
     }

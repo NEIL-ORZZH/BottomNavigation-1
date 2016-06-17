@@ -19,11 +19,9 @@ android {
 }
 
 dependencies {
-    compile 'com.chrischeng:gradienttabview:1.1.0'
+    compile 'com.chrischeng:gradienttabview:1.1.2'
+    compile 'com.android.support:design:23.4.0'
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.3.0'
-    compile 'com.android.support:design:23.3.0'
 }
 
 apply from: 'https://raw.githubusercontent.com/ChrisCheng4j/LibPublisher/master/bintrayUpload.gradle'

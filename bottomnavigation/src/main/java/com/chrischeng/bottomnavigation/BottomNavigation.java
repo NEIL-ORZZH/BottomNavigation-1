@@ -1,6 +1,7 @@
 package com.chrischeng.bottomnavigation;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
@@ -15,9 +16,6 @@ import java.util.List;
 
 public class BottomNavigation extends LinearLayout implements View.OnClickListener {
 
-    private static final boolean DEFAULT_SCROLL_SMOOTHLY = true;
-    private static final int DEFAULT_VP_LIMIT = 1;
-
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
     private boolean mSmoothly;
@@ -31,7 +29,7 @@ public class BottomNavigation extends LinearLayout implements View.OnClickListen
 
     public BottomNavigation(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context, attrs);
+        init(attrs);
     }
 
     public void setOnPageChangeListener(OnPageChangeListener listener) {
@@ -77,20 +75,25 @@ public class BottomNavigation extends LinearLayout implements View.OnClickListen
         setCurrentItem(pos);
     }
 
-    private void init(Context context, AttributeSet attrs) {
+    private void init(AttributeSet attrs) {
         setOrientation(LinearLayout.VERTICAL);
-        initView(context, attrs);
+        initView();
+        initAttrs(attrs);
         initListener();
     }
 
-    private void initView(Context context, AttributeSet attrs) {
-        View v = LayoutInflater.from(getContext()).inflate(R.layout.bottom_navigation, this, true);
-        mViewPager = (ViewPager) v.findViewById(R.id.vp);
-        mTabLayout = (TabLayout) v.findViewById(R.id.tabLayout);
+    private void initView() {
+        LayoutInflater.from(getContext()).inflate(R.layout.bottom_navigation, this, true);
+        mViewPager = (ViewPager) findViewById(R.id.vp);
+        mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
+    }
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BottomNavigation);
-        mSmoothly = a.getBoolean(R.styleable.BottomNavigation_bn_tab_vp_smoothScroll, DEFAULT_SCROLL_SMOOTHLY);
-        mViewPager.setOffscreenPageLimit(a.getInteger(R.styleable.BottomNavigation_bn_tab_vp_limit, DEFAULT_VP_LIMIT));
+    private void initAttrs(AttributeSet attrs) {
+        Resources res = getResources();
+
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.BottomNavigation);
+        mSmoothly = a.getBoolean(R.styleable.BottomNavigation_bn_tab_vp_scroll_smoothly, res.getBoolean(R.bool.default_nav_scroll_smoothly));
+        mViewPager.setOffscreenPageLimit(a.getInteger(R.styleable.BottomNavigation_bn_tab_vp_limit, res.getInteger(R.integer.default_vp_limit)));
         a.recycle();
     }
 

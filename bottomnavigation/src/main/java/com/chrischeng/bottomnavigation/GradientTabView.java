@@ -130,7 +130,7 @@ public class GradientTabView extends LinearLayout {
         mTextView.setTopTextColor(a.getColor(R.styleable.GradientTabView_gt_text_top_color,
                 res.getColor(R.color.default_tab_text_color)));
 
-        ((LayoutParams) mTextView.getLayoutParams()).topMargin = (int) a.getDimension(R.styleable.GradientTabView_gt_text_marginTop,
+        ((LayoutParams) mTextView.getLayoutParams()).topMargin = (int) a.getDimension(R.styleable.GradientTabView_gt_text_top_margin,
                 res.getDimension(R.dimen.default_tab_text_top_margin));
 
         a.recycle();

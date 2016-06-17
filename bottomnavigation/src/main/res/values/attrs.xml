@@ -5,8 +5,8 @@
         <attr name="bn_tab_icon_height" format="dimension" />
         <attr name="bn_tab_text_size" format="dimension" />
         <attr name="bn_tab_text_color" format="color" />
-        <attr name="bn_tab_text_marginTop" format="dimension" />
-        <attr name="bn_tab_vp_smoothScroll" format="boolean" />
+        <attr name="bn_tab_text_top_margin" format="dimension" />
+        <attr name="bn_tab_vp_scroll_smoothly" format="boolean" />
         <attr name="bn_tab_vp_limit" format="integer" />
     </declare-styleable>
 
@@ -19,6 +19,6 @@
         <attr name="gt_text_size" format="dimension" />
         <attr name="gt_text_bot_color" format="color" />
         <attr name="gt_text_top_color" format="color" />
-        <attr name="gt_text_marginTop" format="dimension" />
+        <attr name="gt_text_top_margin" format="dimension" />
     </declare-styleable>
 </resources>

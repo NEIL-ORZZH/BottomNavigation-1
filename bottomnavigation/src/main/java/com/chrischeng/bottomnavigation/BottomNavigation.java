@@ -71,7 +71,6 @@ public class BottomNavigation extends LinearLayout implements View.OnClickListen
     public void onClick(View v) {
         mIsClick = true;
         int pos = (int) v.getTag();
-        highlight(pos);
         setCurrentItem(pos);
     }
 
@@ -101,30 +100,32 @@ public class BottomNavigation extends LinearLayout implements View.OnClickListen
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (mListener != null)
-                    mListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
-
                 if (!mIsClick && positionOffset > 0) {
                     mTabViews.get(position).getImageView().setAlpha(1 - positionOffset);
                     mTabViews.get(position).getTextView().setAlpha(1 - positionOffset);
                     mTabViews.get(position + 1).getImageView().setAlpha(positionOffset);
                     mTabViews.get(position + 1).getTextView().setAlpha(positionOffset);
                 }
+
+                if (mListener != null)
+                    mListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
             }
 
             @Override
             public void onPageSelected(int position) {
+                mIsClick = false;
+
                 if (mListener != null)
                     mListener.onPageSelected(position);
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                if (mListener != null)
-                    mListener.onPageScrollStateChanged(state);
-
                 if (state == ViewPager.SCROLL_STATE_IDLE)
                     mIsClick = false;
+
+                if (mListener != null)
+                    mListener.onPageScrollStateChanged(state);
             }
         });
     }

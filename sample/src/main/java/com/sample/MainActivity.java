@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.chrischeng.bottomnavigation.BottomNavigation;
 import com.chrischeng.bottomnavigation.CommonFragmentPagerAdapter;
+import com.chrischeng.bottomnavigation.OnPageChangeListener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,10 +21,30 @@ public class MainActivity extends AppCompatActivity {
         int[] textColors = {Color.GRAY, getResources().getColor(R.color.theme)};
 
         BottomNavigation nav = (BottomNavigation) findViewById(R.id.bot_nav);
+        assert nav != null;
+
         CommonFragmentPagerAdapter adapter = new CommonFragmentPagerAdapter(this, getSupportFragmentManager());
         adapter.setResources(botImgRes, topImgRes, textRes, textColors);
         adapter.addFragments(TabFragment1.class, TabFragment2.class, TabFragment3.class);
-        if (nav != null)
-            nav.setAdapter(adapter);
+        nav.setAdapter(adapter);
+
+        nav.setCurrentItem(0); //default 0
+        nav.setScrollSmoothly(false); // default true
+        nav.setOnPageChangeListener(new OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 }

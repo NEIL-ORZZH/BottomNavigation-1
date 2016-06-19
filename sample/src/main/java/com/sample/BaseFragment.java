@@ -20,6 +20,12 @@ public abstract class BaseFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_tab, container, false);
         TextView textView = (TextView) v.findViewById(R.id.tv);
         textView.setText(getText());
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastManager.getInstance().showToast(getText());
+            }
+        });
 
         return v;
     }

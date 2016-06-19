@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         nav.setCurrentItem(0); // default 0
         nav.setScrollSmoothly(true); // default true
         nav.setScrollable(true); // default true
+        nav.setOffScreenPageLimit(1); // default 1
         nav.setOnPageChangeListener(new OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

@@ -73,6 +73,10 @@ public class BottomNavigation extends LinearLayout implements View.OnClickListen
             mSmoothly = false;
     }
 
+    public void setOffScreenPageLimit(int limit) {
+        mViewPager.setOffscreenPageLimit(limit);
+    }
+
     @Override
     public void onClick(View v) {
         mIsClick = true;

@@ -28,8 +28,9 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragments(TabFragment1.class, TabFragment2.class, TabFragment3.class);
         nav.setAdapter(adapter);
 
-        nav.setCurrentItem(0); //default 0
-        nav.setScrollSmoothly(false); // default true
+        nav.setCurrentItem(0); // default 0
+        nav.setScrollSmoothly(true); // default true
+        nav.setScrollable(true); // default true
         nav.setOnPageChangeListener(new OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

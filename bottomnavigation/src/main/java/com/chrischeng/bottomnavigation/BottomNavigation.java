@@ -16,7 +16,7 @@ import java.util.List;
 
 public class BottomNavigation extends LinearLayout implements View.OnClickListener {
 
-    private ViewPager mViewPager;
+    private NoScrollViewPager mViewPager;
     private TabLayout mTabLayout;
     private boolean mSmoothly;
     private OnPageChangeListener mListener;
@@ -67,6 +67,12 @@ public class BottomNavigation extends LinearLayout implements View.OnClickListen
         mSmoothly = smoothly;
     }
 
+    public void setScrollable(boolean scrollable) {
+        mViewPager.setScrollable(scrollable);
+        if (!scrollable)
+            mSmoothly = false;
+    }
+
     @Override
     public void onClick(View v) {
         mIsClick = true;
@@ -83,7 +89,7 @@ public class BottomNavigation extends LinearLayout implements View.OnClickListen
 
     private void initView() {
         LayoutInflater.from(getContext()).inflate(R.layout.bottom_navigation, this, true);
-        mViewPager = (ViewPager) findViewById(R.id.vp);
+        mViewPager = (NoScrollViewPager) findViewById(R.id.vp);
         mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
     }
 

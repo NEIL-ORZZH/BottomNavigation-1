@@ -18,10 +18,9 @@ public class BottomNavigation extends LinearLayout implements View.OnClickListen
 
     private NoScrollViewPager mViewPager;
     private TabLayout mTabLayout;
-    private boolean mSmoothly;
     private OnPageChangeListener mListener;
     private List<GradientTabView> mTabViews;
-    private boolean mIsClick;
+    private boolean mIgnoreScrolled;
 
     public BottomNavigation(Context context) {
         this(context, null);
@@ -55,22 +54,21 @@ public class BottomNavigation extends LinearLayout implements View.OnClickListen
         setCurrentItem(0);
     }
 
-    public void setCurrentItem(int item) {
-        PagerAdapter apdater = mViewPager.getAdapter();
-        if (apdater != null && apdater.getCount() > item)
-            mViewPager.setCurrentItem(item, mSmoothly);
-
-        highlight(item);
+    public int getCurrentItem() {
+        return mViewPager.getCurrentItem();
     }
 
-    public void setScrollSmoothly(boolean smoothly) {
-        mSmoothly = smoothly;
+    public void setCurrentItem(int item) {
+        PagerAdapter apdater = mViewPager.getAdapter();
+        if (apdater != null && apdater.getCount() > item) {
+            mIgnoreScrolled = true;
+            highlight(item);
+            mViewPager.setCurrentItem(item, mViewPager.getScrollable());
+        }
     }
 
     public void setScrollable(boolean scrollable) {
         mViewPager.setScrollable(scrollable);
-        if (!scrollable)
-            mSmoothly = false;
     }
 
     public void setOffScreenPageLimit(int limit) {
@@ -79,9 +77,7 @@ public class BottomNavigation extends LinearLayout implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        mIsClick = true;
-        int pos = (int) v.getTag();
-        setCurrentItem(pos);
+        setCurrentItem((int) v.getTag());
     }
 
     private void init(AttributeSet attrs) {
@@ -101,16 +97,20 @@ public class BottomNavigation extends LinearLayout implements View.OnClickListen
         Resources res = getResources();
 
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.BottomNavigation);
-        mSmoothly = a.getBoolean(R.styleable.BottomNavigation_bn_tab_vp_scroll_smoothly, res.getBoolean(R.bool.default_nav_scroll_smoothly));
-        mViewPager.setOffscreenPageLimit(a.getInteger(R.styleable.BottomNavigation_bn_tab_vp_limit, res.getInteger(R.integer.default_vp_limit)));
+        mViewPager.setOffscreenPageLimit(a.getInteger(R.styleable.BottomNavigation_bn_tab_vp_limit,
+                res.getInteger(R.integer.default_vp_limit)));
         a.recycle();
     }
 
     private void initListener() {
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (!mIsClick && positionOffset > 0) {
+                if (positionOffset == 0f)
+                    mIgnoreScrolled = false;
+
+                if (!mIgnoreScrolled && positionOffset > 0) {
                     mTabViews.get(position).getImageView().setAlpha(1 - positionOffset);
                     mTabViews.get(position).getTextView().setAlpha(1 - positionOffset);
                     mTabViews.get(position + 1).getImageView().setAlpha(positionOffset);
@@ -123,16 +123,16 @@ public class BottomNavigation extends LinearLayout implements View.OnClickListen
 
             @Override
             public void onPageSelected(int position) {
-                mIsClick = false;
-
                 if (mListener != null)
                     mListener.onPageSelected(position);
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                if (state == ViewPager.SCROLL_STATE_IDLE)
-                    mIsClick = false;
+                if (state == ViewPager.SCROLL_STATE_IDLE) {
+                    mIgnoreScrolled = false;
+                    highlight(mViewPager.getCurrentItem());
+                }
 
                 if (mListener != null)
                     mListener.onPageScrollStateChanged(state);

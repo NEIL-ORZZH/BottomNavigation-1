@@ -14,6 +14,10 @@ public class NoScrollViewPager extends ViewPager {
         mScrollable = true;
     }
 
+    public boolean getScrollable() {
+        return mScrollable;
+    }
+
     public void setScrollable(boolean scrollable) {
         mScrollable = scrollable;
     }
